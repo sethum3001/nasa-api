@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import APOD from "./components/APOD";
+import OSDR from "./components/OSDR";
 
 function Main() {
   return (
@@ -8,14 +9,14 @@ function Main() {
       <Tabs isFitted variant="enclosed">
         <TabList mb="1em">
           <Tab>APOD</Tab>
-          <Tab>Other</Tab>
+          <Tab>OSDR</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <APOD />
+            <APOD/>
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <OSDR/>
           </TabPanel>
         </TabPanels>
       </Tabs>
