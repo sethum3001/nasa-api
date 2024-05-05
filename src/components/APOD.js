@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, Image, Stack, Heading, Text, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Stack,
+  Heading,
+  Text,
+  Input,
+  Wrap,
+  WrapItem,
+  Spinner,
+} from "@chakra-ui/react";
 
 // Function to get the first day of the week before a given date
 function getFirstDayOfWeekBefore(date) {
@@ -19,59 +29,109 @@ function getYesterday(date) {
 
 const APOD = () => {
   const [data, setData] = useState(null);
+  const [prevImgs, setPrevImgs] = useState(null);
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState("");
+  const [selectedImg, setSelectedImg] = useState(null);
 
   const today = new Date(); // Get today's date
   const firstDayOfWeekBefore = getFirstDayOfWeekBefore(today);
   const yesterday = getYesterday(today);
 
   const handleDate = (event) => {
+    setSelectedImg(null);
     setDate(event.target.value);
+  };
+
+  const handleImgClick = (img) => {
+    setSelectedImg(img);
   };
 
   useEffect(() => {
     async function fetchAPIData() {
+      setLoading(true);
       const NASA_API_KEY = process.env.REACT_APP_NASA_API_KEY;
-      const url1 = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`;
+      const url1 = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&date=${date}`;
       const url2 = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${firstDayOfWeekBefore}&end_date=${yesterday}`;
-      const url3 = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&date=${date}`;
       try {
         const response1 = await fetch(url1);
         const response2 = await fetch(url2);
-        const response3 = await fetch(url3);
-        const apiData = await response3.json();
-        setData(apiData);
+        const apiData1 = await response1.json();
+        const apiData2 = await response2.json();
+        setData(apiData1);
+        setPrevImgs(apiData2);
       } catch (error) {
         console.log(error.message);
+      } finally {
+        setLoading(false);
       }
     }
     fetchAPIData();
   }, [date]);
 
   return (
-    <Box display="flex" alignContent="center" justifyContent="center">
-      <Box
-        maxW="4xl"
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        p="6"
-      >
-        <Image src={data?.url} alt={data?.title} />
-        <Stack mt="6" spacing="3">
-          <Heading size="md">{data?.title}</Heading>
-          <Text>{data?.explanation}</Text>
-        </Stack>
-      </Box>
-      <Box display="flex" justifyItems="center">
-        <Input
-          placeholder="Select Date and Time"
-          size="md"
-          type="date"
-          onChange={handleDate}
+    <Box
+      display="flex"
+      flexDirection={{ base: "row", md: "row" }}
+      alignContent="center"
+      justifyContent="center"
+    >
+      {loading ? (
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
         />
-      </Box>
+      ) : (
+        <>
+          <Box
+            maxW="4xl"
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            p="6"
+          >
+            <Image
+              src={selectedImg?.url || data?.url}
+              alt={selectedImg?.title || data?.title}
+            />
+            <Stack mt="6" spacing="3">
+              <Heading size="md">{selectedImg?.title || data?.title}</Heading>
+              <Text>{selectedImg?.explanation || data?.explanation}</Text>
+            </Stack>
+          </Box>
+          <Box display="flex" justifyItems="center">
+            <Stack>
+              <Input
+                placeholder="Select Date and Time"
+                size="md"
+                type="date"
+                onChange={handleDate}
+              />
+              <Heading>Last Week Images</Heading>
+              <Wrap>
+                {prevImgs &&
+                  prevImgs.map((img) => (
+                    <WrapItem
+                      key={img.date}
+                      onClick={() => handleImgClick(img)}
+                    >
+                      <Image
+                        src={img.url}
+                        alt={img.title}
+                        boxSize="100px"
+                        objectFit="cover"
+                        cursor="pointer"
+                      />
+                    </WrapItem>
+                  ))}
+              </Wrap>
+            </Stack>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
