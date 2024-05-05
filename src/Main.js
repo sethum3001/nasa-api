@@ -1,25 +1,41 @@
 import React, { useState } from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from "@chakra-ui/react";
 import APOD from "./components/APOD";
+import OSDR from "./components/OSDR";
+import Header from "./components/Header";
 
 function Main() {
   return (
-    <>
+    <Box>
+      <Header />
       <Tabs isFitted variant="enclosed">
         <TabList mb="1em">
-          <Tab>APOD</Tab>
-          <Tab>Other</Tab>
+          <Tab
+            _selected={{ color: "black", bg: "white" }}
+            borderRadius={0}
+            bg="blue.400"
+          >
+            APOD
+          </Tab>
+          <Tab
+            _selected={{ color: "black", bg: "white" }}
+            borderRadius={0}
+            bg="blue.400"
+          >
+            {" "}
+            OSDR
+          </Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
             <APOD />
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <OSDR />
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </>
+    </Box>
   );
 }
 
