@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Image,
-  Stack,
-  Heading,
-  Text,
-  Input,
-  Wrap,
-  WrapItem,
-  Spinner,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, Input, Spinner } from "@chakra-ui/react";
 
 // Function to get the first day of the week before a given date
 function getFirstDayOfWeekBefore(date) {
@@ -70,65 +60,77 @@ const APOD = () => {
   }, [date]);
 
   return (
-    <Box
-      display="flex"
-      flexDirection={{ base: "row", md: "row" }}
-      alignContent="center"
-      justifyContent="center"
-    >
+    <Box className="flex flex-col md:flex-row md:items-center rounded-lg ">
       {loading ? (
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
+        <Box className="h-screen content-center">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Box>
       ) : (
         <>
-          <Box
-            maxW="4xl"
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            p="6"
-          >
-            <Image
-              src={selectedImg?.url || data?.url}
-              alt={selectedImg?.title || data?.title}
-            />
-            <Stack mt="6" spacing="3">
-              <Heading size="md">{selectedImg?.title || data?.title}</Heading>
-              <Text>{selectedImg?.explanation || data?.explanation}</Text>
-            </Stack>
-          </Box>
-          <Box display="flex" justifyItems="center">
-            <Stack>
+          <Box className="flex flex-col items-center gap-3 w-full md:w-2/3 md:mr-4 ">
+            <div className="">
               <Input
                 placeholder="Select Date and Time"
                 size="md"
                 type="date"
+                value={
+                  selectedImg?.date || date || today.toISOString().split("T")[0]
+                }
                 onChange={handleDate}
+                min="1995-06-16"
+                max={today.toISOString().split("T")[0]}
               />
-              <Heading>Last Week Images</Heading>
-              <Wrap>
-                {prevImgs &&
-                  prevImgs.map((img) => (
-                    <WrapItem
-                      key={img.date}
-                      onClick={() => handleImgClick(img)}
-                    >
-                      <Image
-                        src={img.url}
-                        alt={img.title}
-                        boxSize="100px"
-                        objectFit="cover"
-                        cursor="pointer"
-                      />
-                    </WrapItem>
-                  ))}
-              </Wrap>
-            </Stack>
+            </div>
+            <div className="w-full md:w-1/2  content-center">
+              {data?.url && /\.(jpeg|jpg|gif|png)$/.test(data.url) ? (
+                <img
+                  src={selectedImg?.url || data?.url}
+                  alt={selectedImg?.title || data?.title}
+                  className="w-full h-full object-cover aspect-square rounded-lg shadow-md"
+                  loading="lazy"
+                />
+              ) : (
+                <iframe
+                  src={data?.url}
+                  title={data?.title}
+                  className="w-full h-full object-cover aspect-video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              )}
+            </div>
+            <div>
+              <Heading size="md">{selectedImg?.title || data?.title}</Heading>
+              <Text>{selectedImg?.explanation || data?.explanation}</Text>
+            </div>
+          </Box>
+          <Box className="w-full md:w-1/3 flex flex-col gap-10 items-center">
+            <h1 className="text-xl ">Last Week Images</h1>
+            <Box className="flex flex-wrap justify-evenly gap-4">
+              {prevImgs &&
+                prevImgs.map(
+                  (img) =>
+                    img.url.match(/\.(jpeg|jpg|gif|png)$/) && (
+                      <Box
+                        key={img.date}
+                        onClick={() => handleImgClick(img)}
+                        className="cursor-pointer flex w-24 h-24 md:w-48 md:h-48"
+                      >
+                        <img
+                          src={img.url}
+                          alt={img.title}
+                          className="rounded-lg shadow-md w-full h-full object-cover"
+                        />
+                      </Box>
+                    )
+                )}
+            </Box>
           </Box>
         </>
       )}

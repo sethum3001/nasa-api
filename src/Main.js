@@ -13,17 +13,18 @@ function Main() {
           <Tab
             _selected={{ color: "black", bg: "white" }}
             borderRadius={0}
-            bg="blue.400"
+            color="white"
+            className="bg-gray-800"
           >
-            APOD
+           APOD
           </Tab>
           <Tab
             _selected={{ color: "black", bg: "white" }}
             borderRadius={0}
-            bg="blue.400"
+            className="bg-gray-800"
+            color="white"
           >
-            {" "}
-            OSDR
+           OSDR
           </Tab>
         </TabList>
         <TabPanels>
