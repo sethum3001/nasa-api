@@ -101,12 +101,14 @@ const OSDR = () => {
                         : "bg-slate-200 hover:bg-slate-300"
                     }`}
                     disabled={from === 0}
+                    data-testid="btnPrevious"
                   >
                     <i className="mr-1 fas fa-chevron-left"></i>Previous
                   </button>
                   <button
                     onClick={handlePaginationIncrease}
                     className="flex items-center px-4 py-2 text-black rounded-lg bg-slate-200 hover:bg-slate-300"
+                    data-testid="btnNext"
                   >
                     <span>Next</span>
                     <i className="ml-1 fas fa-chevron-right"></i>

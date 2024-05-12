@@ -67,8 +67,9 @@ const APOD = () => {
             thickness="4px"
             speed="0.65s"
             emptyColor="gray.200"
-            color="blue.500"
+            color="blue.500" 
             size="xl"
+            data-testid="spinner"
           />
         </Box>
       ) : (
@@ -91,9 +92,9 @@ const APOD = () => {
               {data?.url && /\.(jpeg|jpg|gif|png)$/.test(data.url) ? (
                 <img
                   src={selectedImg?.url || data?.url}
-                  alt={selectedImg?.title || data?.title}
                   className="w-full h-full object-cover aspect-square rounded-lg shadow-md"
                   loading="lazy"
+                  alt="Main"
                 />
               ) : (
                 <iframe
