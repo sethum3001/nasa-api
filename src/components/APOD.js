@@ -60,21 +60,21 @@ const APOD = () => {
   }, [date]);
 
   return (
-    <Box className="flex flex-col md:flex-row md:items-center rounded-lg ">
+    <div className="flex flex-col md:flex-row rounded-lg ">
       {loading ? (
-        <Box className="h-screen content-center">
+        <Box className=" h-screen w-screen flex justify-center items-center">
           <Spinner
             thickness="4px"
             speed="0.65s"
             emptyColor="gray.200"
-            color="blue.500" 
+            color="blue.500"
             size="xl"
             data-testid="spinner"
           />
         </Box>
       ) : (
         <>
-          <Box className="flex flex-col items-center gap-3 w-full md:w-2/3 md:mr-4 ">
+          <div className="flex flex-col items-center gap-3 w-full md:w-2/3 md:mr-4 ">
             <div className="">
               <Input
                 placeholder="Select Date and Time"
@@ -110,10 +110,12 @@ const APOD = () => {
               <Heading size="md">{selectedImg?.title || data?.title}</Heading>
               <Text>{selectedImg?.explanation || data?.explanation}</Text>
             </div>
-          </Box>
-          <Box className="w-full md:w-1/3 flex flex-col gap-10 items-center">
-            <h1 className="text-xl ">Last Week Images</h1>
-            <Box className="flex flex-wrap justify-evenly gap-4">
+          </div>
+          <div className="w-full mt-4 md:w-1/3 flex flex-col gap-10 justify-start items-center ">
+            <div>
+              <h1 className="text-xl ">Last Week Images</h1>
+            </div>
+            <div className="flex flex-wrap justify-evenly gap-4">
               {prevImgs &&
                 prevImgs.map(
                   (img) =>
@@ -131,11 +133,11 @@ const APOD = () => {
                       </Box>
                     )
                 )}
-            </Box>
-          </Box>
+            </div>
+          </div>
         </>
       )}
-    </Box>
+    </div>
   );
 };
 

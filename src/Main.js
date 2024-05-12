@@ -14,17 +14,17 @@ function Main() {
             _selected={{ color: "black", bg: "white" }}
             borderRadius={0}
             color="white"
-            className="bg-gray-800"
+            className="bg-blue-900 "
           >
-           APOD
+           Astronomy Photo Of The Day
           </Tab>
           <Tab
             _selected={{ color: "black", bg: "white" }}
             borderRadius={0}
-            className="bg-gray-800"
+            className="bg-blue-900"
             color="white"
           >
-           OSDR
+           Open Science Data Repository
           </Tab>
         </TabList>
         <TabPanels>
